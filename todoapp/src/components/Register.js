@@ -3,8 +3,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import { connect } from 'react-redux';
+import { registerUser } from '../actions/authActions';
 import Login from './Login';
 import axios from 'axios';
+var apiBaseUrl = 'http://localhost:3000';
 
 class Register extends Component {
   constructor(props){
@@ -13,12 +16,13 @@ class Register extends Component {
       first_name:'',
       email:'',
       password:'',
-      password_confirmation:''
+      password_confirmation:'',
+      errors:''
     }
   }
 
   handleClick(event){
-    var apiBaseUrl = 'http://localhost:3000';
+    // var apiBaseUrl = 'http://localhost:3000';
     console.log("values",this.state.first_name,this.state.email,this.state.password, this.state.password_confirmation);
     //To be done:check for empty values before hitting submit
     var self = this;
@@ -48,7 +52,8 @@ class Register extends Component {
       }
     })
     .catch(function (error) {
-      console.log(error);
+      console.log(error.response.data);
+      this.setState({errors: error.response.data});
     });
   }
  else{
@@ -58,6 +63,7 @@ class Register extends Component {
   
 
   render(){
+    const { errors } = this.state;
     return (
       <div>
         <MuiThemeProvider>
@@ -102,4 +108,10 @@ class Register extends Component {
 const style = {
   margin: 15,
 };
-export default Register;
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  erros: state.errors
+});
+
+export default connect(mapStateToProps,{ registerUser })(Register);

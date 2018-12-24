@@ -5,6 +5,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
 import UploadScreen  from './UploadScreen';
+import setAuthToken from '../utils/setAuthToken'
+import jwt_Decode from 'jwt-decode'
+
 class Login extends Component {
   constructor(props){
     super(props);
@@ -27,6 +30,14 @@ class Login extends Component {
     if(response.status === 200){
     console.log("Login successfull");
     var uploadScreen=[];
+    const { token } = response.data;
+    localStorage.setItem('jwtToken', response.data);
+    axios.defaults.headers.common['Authorization'] = token;
+    // setAuthToken(response.data);
+    const decoded = jwt_Decode(response.data);
+    // set login user
+
+
     uploadScreen.push(<UploadScreen appContext={self.props.appContext}/>)
     self.props.appContext.setState({loginPage:[],uploadScreen:uploadScreen})
     }
