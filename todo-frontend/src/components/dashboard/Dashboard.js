@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import TodoList from '../TodoList';
 
 class Dashboard extends Component {
   constructor(props){
@@ -8,6 +9,7 @@ class Dashboard extends Component {
       todos:[]
     };
   }
+  
   componentWillMount(){
     axios
       .get('http://localhost:3000/todos')
@@ -18,7 +20,7 @@ class Dashboard extends Component {
       console.log(error);
       });
   }
- 
+
   render() {
     const todoItems = this.state.todos.map( todo => (
       <div key={todo.id}>
@@ -27,7 +29,9 @@ class Dashboard extends Component {
     ));
     return (
       <div>
-        { todoItems }
+        <h1>ToDos</h1>
+        <TodoList />
+        { todoItems } 
       </div>
     )
   }
