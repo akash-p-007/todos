@@ -30,7 +30,7 @@ class Dashboard extends Component {
     return (
       <div>
         <h1>ToDos</h1>
-        <TodoList />
+        <TodoList todos={this.state.todos} />
         { todoItems } 
       </div>
     )
