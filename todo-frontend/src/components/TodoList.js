@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import TodoItems from "./TodoItems";
+import axios from 'axios';
 import "./TodoList.css";
 
 class TodoList extends Component {
@@ -7,9 +8,8 @@ class TodoList extends Component {
     super(props);
    
     this.state = {
-      items: []
+      items: this.props.todos
     };
-    this.apiUrl = ''
     this.addItem = this.addItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
   }
@@ -17,21 +17,26 @@ class TodoList extends Component {
   addItem(e) {
     if (this._inputElement.value !== "") {
       var newItem = {
-        text: this._inputElement.value,
+        title: this._inputElement.value,
         key: Date.now()
       };
    
-      this.setState((prevState) => {
-        return { 
-          items: prevState.items.concat(newItem) 
-        };
-      });
-     
+      // this.setState((prevState) => {
+      //   return { 
+      //     items: prevState.items.concat(newItem) 
+      //   };
+      // });
+      axios
+        .post('http://localhost:3000/todos',newItem)
+        .then( (res) => {
+          this.setState({todos: res.data});    
+        })
+        .catch(function (error) {
+        console.log(error);
+        });
+      // console.log(this.state.items[0].title);
       this._inputElement.value = "";
-    }
-    // Write axios here for submission 
-    console.log(this.state.items);
-       
+    }        
     e.preventDefault();
   }
 
@@ -43,6 +48,13 @@ class TodoList extends Component {
     this.setState({
       items: filteredItems
     });
+    // axios.delete('http://localhost:3000/todos',filteredItems)
+    // .then( (res) => {
+    //   console.log("deleted"+ res);    
+    // })
+    // .catch(function (error) {
+    // console.log(error);
+    // });
   }
 
   render() {
