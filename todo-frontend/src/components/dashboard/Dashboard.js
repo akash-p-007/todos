@@ -10,16 +10,16 @@ class Dashboard extends Component {
     };
   }
   
-  componentWillMount(){
-    axios
-      .get('http://localhost:3000/todos')
-      .then( (res) => {
-        this.setState({todos: res.data});    
-      })
-      .catch(function (error) {
-      console.log(error);
-      });
-  }
+  // componentWillMount(){
+  //   axios
+  //     .get('http://localhost:3000/todos')
+  //     .then( (res) => {
+  //       this.setState({todos: res.data});    
+  //     })
+  //     .catch(function (error) {
+  //     console.log(error);
+  //     });
+  // }
 
   render() {
     const todoItems = this.state.todos.map( todo => (
