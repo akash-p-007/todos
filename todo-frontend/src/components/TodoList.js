@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 import TodoItems from "./TodoItems";
 import axios from 'axios';
@@ -36,36 +35,35 @@ class TodoList extends Component {
       console.log(error);
       });
   }
-  
-  componentWillReceiveProps(nextProps){
-    //update aaray after adding new prop
-    console.log(nextProps);
-  }
 
   addItem(e) {
-
     if (this._inputElement.value !== "") {
       var newItem = {
-        title: this._inputElement.value,
-        key: Date.now()
-    };
-    axios
-      .post('http://localhost:3000/todos',newItem)
-      .then( (res) => {
-        // this.setState({todos: res.data});    
-        this.setState((prevState) => {
-          return { 
-            items: prevState.items.concat(newItem) 
-          };
-        });
-      })
-      .catch(function (error) {
-      console.log(error);
-      });    
-      this._inputElement.value = "";
-    }
-     
-    
+        text: this._inputElement.value,
+        key: Date.now(),
+        title: this._inputElement.value
+      };
+
+      this.setState((prevState) => {
+        return { 
+          items: prevState.items.concat(newItem) 
+        };
+      });
+      axios
+        .post('http://localhost:3000/todos',newItem)
+        .then( (res) => {
+          console.log(newItem);   
+          this.setState((prevState) => {
+            return { 
+              items: prevState.items.concat() 
+            };
+          });
+        })
+        .catch(function (error) {
+        console.log(error);
+        });    
+        this._inputElement.value = "";
+      }
     this._inputElement.value = "";           
     e.preventDefault();
   }
